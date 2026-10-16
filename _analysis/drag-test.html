@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Drag Capability Test</title>
+<style>
+  body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #f2f4f8; }
+  #stage { position: relative; width: 1000px; height: 600px; background: #fff; border: 1px solid #ccc; margin: 10px; }
+  #box {
+    position: absolute; left: 300px; top: 200px; width: 120px; height: 80px;
+    background: #3e8eff; color: #fff; border-radius: 8px; cursor: grab;
+    display: flex; align-items: center; justify-content: center; user-select: none; touch-action: none;
+  }
+  #target {
+    position: absolute; left: 600px; top: 200px; width: 120px; height: 80px;
+    border: 2px dashed #f0597b; border-radius: 8px; color: #f0597b; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #info { margin: 10px; font-size: 13px; color: #333; }
+  #log { margin: 10px; width: 1000px; height: 240px; overflow: auto; background: #10141c; color: #7ee787;
+         font: 12px Consolas, monospace; padding: 8px; box-sizing: border-box; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<div id="info">viewport: <span id="vp"></span> · box: <span id="pos"></span> · mouse: <span id="mpos">(?)</span></div>
+<div id="stage">
+  <div id="box">拖我</div>
+  <div id="target">目标区</div>
+</div>
+<pre id="log">-- event log --</pre>
+<script>
+  const box = document.getElementById('box');
+  const pos = document.getElementById('pos');
+  const mpos = document.getElementById('mpos');
+  const logEl = document.getElementById('log');
+  const vp = document.getElementById('vp');
+  let dragging = false, offX = 0, offY = 0, evCount = 0;
+  window.addEventListener('mousemove', (e) => {
+    mpos.textContent = `(${Math.round(e.clientX)},${Math.round(e.clientY)})`;
+  }, { passive: true });
+  function logEv(t, e) {
+    if (++evCount > 300) return;
+    const r = box.getBoundingClientRect();
+    const line = `${t} client=(${Math.round(e.clientX)},${Math.round(e.clientY)}) box=(${Math.round(r.x)},${Math.round(r.y)})`;
+    logEl.textContent += '\n' + line;
+    logEl.scrollTop = logEl.scrollHeight;
+    pos.textContent = `left=${r.x}, top=${r.y}`;
+  }
+  function updatePos() { const r = box.getBoundingClientRect(); pos.textContent = `left=${Math.round(r.x)}, top=${Math.round(r.y)}`; }
+  vp.textContent = `${innerWidth} x ${innerHeight}`;
+  updatePos();
+
+  ['pointerdown', 'pointermove', 'pointerup', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'].forEach(t => {
+    box.addEventListener(t, (e) => logEv(t, e), { passive: false });
+  });
+  box.addEventListener('mousedown', (e) => { dragging = true; offX = e.clientX - box.getBoundingClientRect().left; offY = e.clientY - box.getBoundingClientRect().top; });
+  window.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    box.style.left = (e.clientX - offX) + 'px';
+    box.style.top = (e.clientY - offY) + 'px';
+    updatePos();
+  });
+  window.addEventListener('mouseup', () => { dragging = false; logEl.textContent += '\n[mouseup] dragging=false'; });
+</script>
+</body>
+</html>

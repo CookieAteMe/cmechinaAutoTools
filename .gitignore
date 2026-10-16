@@ -1,0 +1,22 @@
+# ===== 系统 / 编辑器 =====
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+.idea/
+.vscode/
+*.user
+
+# ===== 依赖与构建 =====
+node_modules/
+dist/
+build/
+
+# ===== 日志 =====
+*.log
+
+# ===== 站点第三方静态包（_analysis 证据目录）=====
+# 以下为逆向分析时从目标站下载的第三方压缩 JS/CSS bundle 与 chunk，
+# 非本项目自有代码，不入库；保留自有分析产物（_chunks.txt、drag-test.html 等）。
+_analysis/*.js
+_analysis/*.css

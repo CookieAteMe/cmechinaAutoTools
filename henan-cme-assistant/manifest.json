@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "河南医继续教育学习助手",
+  "version": "1.1.0",
+  "description": "前端DOM监测辅助学习：检测视频播放状态、验证码打卡弹窗暂停自动化并被动诊断、视频结束后自动切课；验证码弹窗提供标题闪烁与系统通知提醒。不绕过任何后端校验，数据仅存本地。",
+  "permissions": ["storage", "notifications"],
+  "host_permissions": ["https://yuancheng.henanyixue.com/*"],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "河南医继续教育学习助手"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://yuancheng.henanyixue.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>河南医继续教育学习助手</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="hd">
+      <div class="hd-left">
+        <span class="logo">豫</span>
+        <div>
+          <h1>河南医学习助手</h1>
+          <p class="sub">仅前端 DOM 监测 · 数据本地 · 不绕过后端校验</p>
+        </div>
+      </div>
+      <div id="masterBadge" class="badge running" title="自动化总开关状态">运行中</div>
+    </header>
+
+    <section class="switches">
+      <label class="switch-row">
+        <span class="switch-name">自动切换下一节<em>视频结束后自动切课</em></span>
+        <input type="checkbox" id="swAuto" class="switch" />
+      </label>
+      <label class="switch-row">
+        <span class="switch-name">视频结束检测<em>事件 + 低频轮询兜底</em></span>
+        <input type="checkbox" id="swEnd" class="switch" />
+      </label>
+      <label class="switch-row">
+        <span class="switch-name">验证码暂停切换<em>弹窗出现即挂起自动切换</em></span>
+        <input type="checkbox" id="swCaptcha" class="switch" />
+      </label>
+      <label class="switch-row">
+        <span class="switch-name">诊断模式<em>对验证码组件被动观察</em></span>
+        <input type="checkbox" id="swDiag" class="switch" />
+      </label>
+      <label class="switch-row">
+        <span class="switch-name">标题闪烁提醒<em>验证码弹窗时标签页标题闪烁</em></span>
+        <input type="checkbox" id="swFlash" class="switch" />
+      </label>
+      <label class="switch-row">
+        <span class="switch-name">系统通知提醒<em>验证码弹窗时发送系统通知</em></span>
+        <input type="checkbox" id="swNotify" class="switch" />
+      </label>
+      <label class="switch-row">
+        <span class="switch-name">页面浮窗面板<em>课程页内浮动控制面板</em></span>
+        <input type="checkbox" id="swPanel" class="switch" />
+      </label>
+    </section>
+
+    <section class="status">
+      <div class="grid2">
+        <div class="cell">
+          <span class="k">当前课程</span>
+          <span id="stTitle" class="v title">—</span>
+        </div>
+        <div class="cell">
+          <span class="k">播放器状态</span>
+          <span id="stVideo" class="v state">无播放器</span>
+        </div>
+      </div>
+      <div class="cell">
+        <span class="k">播放进度</span>
+        <div class="prog">
+          <div class="prog-bar"><i id="progFill"></i></div>
+          <span id="progText">0%</span>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="cell">
+          <span class="k">验证码</span>
+          <span id="stCaptcha" class="v captcha">未出现</span>
+        </div>
+        <div class="cell">
+          <span class="k">切课挂起</span>
+          <span id="stPending" class="v">否</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="actions">
+      <button id="btnRescan" class="btn">重新扫描页面</button>
+      <button id="btnPause" class="btn warn">暂停自动化</button>
+      <button id="btnResume" class="btn primary">恢复自动化</button>
+      <button id="btnClear" class="btn ghost">清空日志</button>
+    </section>
+
+    <section class="diag">
+      <div class="diag-hd">
+        <span>验证码诊断（最近会话）</span>
+        <button id="btnDiagToggle" class="btn ghost tiny">展开</button>
+      </div>
+      <div id="diagBody" class="diag-body hidden"></div>
+    </section>
+
+    <section class="logs">
+      <div class="logs-hd"><span>运行日志</span><span id="logCount">0</span></div>
+      <div id="logList" class="log-list"></div>
+    </section>
+
+    <footer class="ft">
+      仅匹配 yuancheng.henanyixue.com · 验证码需人工完成
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
